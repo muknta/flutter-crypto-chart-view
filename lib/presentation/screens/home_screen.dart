@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  late MainBloc mainBloc;
+  late MainBloc _mainBloc;
 
   @override
   void initState() {
@@ -29,9 +29,18 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    mainBloc = Provider.of<MainBloc>(context, listen: false);
+    _mainBloc = Provider.of<MainBloc>(context, listen: false);
   }
 
   @override
-  Widget build(BuildContext context);
+  Widget build(BuildContext context) => Scaffold(
+        body: SafeArea(
+          child: StreamBuilder(
+            stream: _mainBloc.webSocketChannel.stream,
+            builder: (context, snapshot) {
+              return Text(snapshot.hasData ? '${snapshot.data}' : '');
+            },
+          ),
+        ),
+      );
 }
