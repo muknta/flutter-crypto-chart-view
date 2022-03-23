@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:crypto_chart_view/domain/repositories/local_repositories/i_local_repository.dart';
 import 'package:crypto_chart_view/domain/repositories/remote_repositories/i_remote_repository.dart';
-import 'package:crypto_chart_view/internal/services/locator.dart';
+import 'package:crypto_chart_view/interna/services/locator.dart';
 
 class Application extends StatelessWidget {
   const Application({Key? key}) : super(key: key);
