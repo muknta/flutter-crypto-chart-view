@@ -40,18 +40,21 @@ class _ActualDataWidgetState extends State<ActualDataWidget> {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (fromCurrency != null && toCurrency != null)
-                _CurrencyParameterWidget(
-                  title: 'Symbol:',
-                  value: '${fromCurrency.name.toUpperCase()}/${toCurrency.name.toUpperCase()}',
-                ),
+              _CurrencyParameterWidget(
+                title: 'Currency:',
+                // TODO: presentation mapper
+                value: fromCurrency != null && toCurrency != null
+                    ? '${fromCurrency.uppercasedName}/${toCurrency.uppercasedName}'
+                    : '',
+              ),
               _CurrencyParameterWidget(
                 title: 'Price:',
-                value: '${toCurrencySymbolMap[toCurrency]} $price',
+                value: toCurrency != null ? '${toCurrency.symbol} $price' : '',
               ),
               _CurrencyParameterWidget(
                 title: 'Time:',
-                value: DateFormat('kk:mm:ss / dd.MM.yyyy').format(time),
+                // TODO: presentation mapper
+                value: DateFormat('kk:mm:ss of dd.MM.yyyy').format(time),
               ),
             ],
           );
@@ -60,20 +63,18 @@ class _ActualDataWidgetState extends State<ActualDataWidget> {
 }
 
 class _CurrencyParameterWidget extends StatelessWidget {
-  const _CurrencyParameterWidget({required String title, required String? value})
+  const _CurrencyParameterWidget({required String title, required String value})
       : _title = title,
         _value = value;
 
   final String _title;
-  final String? _value;
+  final String _value;
 
   @override
-  Widget build(BuildContext context) => _value == null
-      ? const SizedBox.shrink()
-      : Column(
-          children: [
-            AutoSizeText(_title),
-            AutoSizeText(_value!),
-          ],
-        );
+  Widget build(BuildContext context) => Column(
+        children: [
+          AutoSizeText(_title),
+          AutoSizeText(_value),
+        ],
+      );
 }

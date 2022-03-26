@@ -1,4 +1,3 @@
-import 'package:crypto_chart_view/presentation/utils/enums/currency_enum.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class MainEvent extends Equatable {
@@ -12,17 +11,34 @@ class InitialEvent extends MainEvent {
   const InitialEvent();
 }
 
-class ActualDataRequestEvent extends MainEvent {
-  const ActualDataRequestEvent({
-    required this.fromCurrency,
-    required this.toCurrency,
+abstract class ActualDataEvent extends MainEvent {
+  const ActualDataEvent();
+}
+
+class ActualDataRequestEvent extends ActualDataEvent {
+  const ActualDataRequestEvent();
+}
+
+class SetFromCurrencyEvent extends ActualDataEvent {
+  const SetFromCurrencyEvent({
+    required this.value,
   });
 
-  final String fromCurrency;
-  final String toCurrency;
+  final String value;
 
   @override
-  List<Object?> get props => [fromCurrency, toCurrency];
+  List<Object?> get props => [value];
+}
+
+class SetToCurrencyEvent extends ActualDataEvent {
+  const SetToCurrencyEvent({
+    required this.value,
+  });
+
+  final String value;
+
+  @override
+  List<Object?> get props => [value];
 }
 
 class HistoricalDataRequestEvent extends MainEvent {

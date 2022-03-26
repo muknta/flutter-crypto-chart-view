@@ -8,7 +8,7 @@ class RequestWebSocketEntity {
   });
 
   RequestWebSocketRemoteModel toRemoteModel() => RequestWebSocketRemoteModel(
-        subscribeFilterAssetId: ['${fromCurrency.name.toUpperCase()}/${toCurrency.name.toUpperCase()}'],
+        subscribeFilterAssetId: ['${fromCurrency.uppercasedName}/${toCurrency.uppercasedName}'],
       );
 
   final FromCurrencyEnum fromCurrency;

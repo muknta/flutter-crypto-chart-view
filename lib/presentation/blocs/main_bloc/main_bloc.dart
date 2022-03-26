@@ -26,8 +26,22 @@ class MainBloc with BlocStreamMixin {
   final IRemoteRepository _remoteRepository;
   final ILocalRepository _localRepository;
 
+  static const String _defaultFromCurrencyStringValue = 'BTC';
+  static const String _defaultToCurrencyStringValue = 'USD';
+
   final _eventController = BehaviorSubject<MainEvent>();
   Function(MainEvent) get addEvent => sinkAdd(_eventController);
+
+  final _fromCurrencySwitcherStateController = BehaviorSubject<FromCurrencySwitcherState>.seeded(
+      const FromCurrencySwitcherState(value: _defaultFromCurrencyStringValue));
+  Stream<FromCurrencySwitcherState> get fromCurrencySwitcherStream => _fromCurrencySwitcherStateController.stream;
+  Function(FromCurrencySwitcherState) get _setFromCurrencySwitcherState =>
+      sinkAdd(_fromCurrencySwitcherStateController);
+
+  final _toCurrencySwitcherStateController = BehaviorSubject<ToCurrencySwitcherState>.seeded(
+      const ToCurrencySwitcherState(value: _defaultToCurrencyStringValue));
+  Stream<ToCurrencySwitcherState> get toCurrencySwitcherStream => _toCurrencySwitcherStateController.stream;
+  Function(ToCurrencySwitcherState) get _setToCurrencySwitcherState => sinkAdd(_toCurrencySwitcherStateController);
 
   Stream<LoadedActualDataState>? _actualDataStateStream;
   Stream<LoadedActualDataState> get actualDataStateStream =>
@@ -49,16 +63,26 @@ class MainBloc with BlocStreamMixin {
             toCurrency: ToCurrencyEnum.usd,
           ),
         );
-      } else if (event is ActualDataRequestEvent) {
-        final FromCurrencyEnum? fromCurrency = getFromCurrencyEnumFromString(event.fromCurrency);
-        final ToCurrencyEnum? toCurrency = getToCurrencyEnumFromString(event.toCurrency);
-        if (fromCurrency != null && toCurrency != null) {
-          await SetSocketRequest(remoteRepository: _remoteRepository).execute(
-            params: RequestWebSocketEntity(
-              fromCurrency: fromCurrency,
-              toCurrency: toCurrency,
-            ),
-          );
+      } else if (event is ActualDataEvent) {
+        if (event is ActualDataRequestEvent) {
+          if (isStreamHasValue(_fromCurrencySwitcherStateController) &&
+              isStreamHasValue(_toCurrencySwitcherStateController)) {
+            final FromCurrencyEnum? fromCurrency =
+                _fromCurrencySwitcherStateController.value.value.fromCurrencyEnumValue;
+            final ToCurrencyEnum? toCurrency = _toCurrencySwitcherStateController.value.value.toCurrencyEnumValue;
+            if (fromCurrency != null && toCurrency != null) {
+              await SetSocketRequest(remoteRepository: _remoteRepository).execute(
+                params: RequestWebSocketEntity(
+                  fromCurrency: fromCurrency,
+                  toCurrency: toCurrency,
+                ),
+              );
+            }
+          }
+        } else if (event is SetFromCurrencyEvent) {
+          _setFromCurrencySwitcherState(FromCurrencySwitcherState(value: event.value));
+        } else if (event is SetToCurrencyEvent) {
+          _setToCurrencySwitcherState(ToCurrencySwitcherState(value: event.value));
         }
       } else if (event is HistoricalDataRequestEvent) {}
     }
@@ -68,6 +92,12 @@ class MainBloc with BlocStreamMixin {
   void dispose() {
     if (isStreamNotClosed(_eventController)) {
       _eventController.close();
+    }
+    if (isStreamNotClosed(_fromCurrencySwitcherStateController)) {
+      _fromCurrencySwitcherStateController.close();
+    }
+    if (isStreamNotClosed(_toCurrencySwitcherStateController)) {
+      _toCurrencySwitcherStateController.close();
     }
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,

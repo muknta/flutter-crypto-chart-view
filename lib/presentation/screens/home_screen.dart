@@ -40,11 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
-          child: Column(
-            children: const [
-              CurrencyForm(),
-              ActualDataWidget(),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  child: CurrencyForm(),
+                ),
+                ActualDataWidget(),
+              ],
+            ),
           ),
         ),
       );

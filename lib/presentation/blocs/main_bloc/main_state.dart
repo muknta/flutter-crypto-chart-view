@@ -8,7 +8,11 @@ abstract class MainState extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadedActualDataState extends MainState {
+class ActualDataState extends MainState {
+  const ActualDataState();
+}
+
+class LoadedActualDataState extends ActualDataState {
   const LoadedActualDataState({
     required this.responseEntity,
   });
@@ -17,6 +21,28 @@ class LoadedActualDataState extends MainState {
 
   @override
   List<Object?> get props => [responseEntity];
+}
+
+class FromCurrencySwitcherState extends ActualDataState {
+  const FromCurrencySwitcherState({
+    required this.value,
+  });
+
+  final String value;
+
+  @override
+  List<Object?> get props => [value];
+}
+
+class ToCurrencySwitcherState extends ActualDataState {
+  const ToCurrencySwitcherState({
+    required this.value,
+  });
+
+  final String value;
+
+  @override
+  List<Object?> get props => [value];
 }
 
 class LoadedHistoricalDataState extends MainState {

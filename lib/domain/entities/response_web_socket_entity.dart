@@ -16,8 +16,8 @@ class ResponseWebSocketEntity {
       final String fromCurrency = symbolParts.elementAt(length - 2);
       final String toCurrency = symbolParts.elementAt(length - 1);
       return ResponseWebSocketEntity(
-        fromCurrency: getFromCurrencyEnumFromString(fromCurrency),
-        toCurrency: getToCurrencyEnumFromString(toCurrency),
+        fromCurrency: fromCurrency.fromCurrencyEnumValue,
+        toCurrency: toCurrency.toCurrencyEnumValue,
         price: remoteModel.price,
         time: DateTime.parse(remoteModel.timeExchange),
       );
