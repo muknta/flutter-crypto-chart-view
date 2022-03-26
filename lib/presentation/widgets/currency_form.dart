@@ -27,13 +27,21 @@ class _CurrencyFormState extends State<CurrencyForm> {
           children: [
             Expanded(
               flex: 3,
-              child:
-              TextFormField(
+              child: TextFormField(
+                onSaved: (String? value) {
+                  if (value != null && value.isNotEmpty && value.contains('/')) {
+                    final List list = value.split('/');
+                    _bloc.addEvent(ActualDataRequestEvent(
+                      fromCurrency: list[0],
+                      toCurrency: list[1],
+                    ));
+                  }
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Enter a currency';
                   }
-                  return value;
+                  return null;
                 },
               ),
               //   DropdownButtonHideUnderline(
@@ -55,10 +63,10 @@ class _CurrencyFormState extends State<CurrencyForm> {
               child: ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-  _bloc.addEvent(ActualDataRequestEvent(fromCurrency: _formKey., toCurrency: toCurrency));
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Processing Data')),
                     );
+                    _formKey.currentState!.save();
                   }
                 },
                 child: const Text('Submit'),
@@ -66,6 +74,5 @@ class _CurrencyFormState extends State<CurrencyForm> {
             ),
           ],
         ),
-        
       );
 }

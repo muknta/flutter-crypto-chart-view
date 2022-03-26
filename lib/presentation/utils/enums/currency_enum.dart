@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
+
 enum FromCurrencyEnum {
   btc,
+  eth,
 }
 
 enum ToCurrencyEnum {
@@ -30,3 +33,11 @@ List<String> combinedCurrencyPairs = _combinedCurrencyPairs ??= currencyPairs
 const toCurrencySymbolMap = <ToCurrencyEnum, String>{
   ToCurrencyEnum.usd: '\$',
 };
+
+FromCurrencyEnum? getFromCurrencyEnumFromString(String value) => FromCurrencyEnum.values.firstWhereOrNull(
+      (element) => element.name.toLowerCase() == value.toLowerCase(),
+    );
+
+ToCurrencyEnum? getToCurrencyEnumFromString(String value) => ToCurrencyEnum.values.firstWhereOrNull(
+      (element) => element.name.toLowerCase() == value.toLowerCase(),
+    );

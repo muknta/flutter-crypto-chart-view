@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:crypto_chart_view/data/api/models/remote_models/response_web_socket_remote_model.dart';
 import 'package:crypto_chart_view/presentation/utils/enums/currency_enum.dart';
 
@@ -17,12 +16,8 @@ class ResponseWebSocketEntity {
       final String fromCurrency = symbolParts.elementAt(length - 2);
       final String toCurrency = symbolParts.elementAt(length - 1);
       return ResponseWebSocketEntity(
-        fromCurrency: FromCurrencyEnum.values.firstWhereOrNull(
-          (element) => element.name.toLowerCase() == fromCurrency.toLowerCase(),
-        ),
-        toCurrency: ToCurrencyEnum.values.firstWhereOrNull(
-          (element) => element.name.toLowerCase() == toCurrency.toLowerCase(),
-        ),
+        fromCurrency: getFromCurrencyEnumFromString(fromCurrency),
+        toCurrency: getToCurrencyEnumFromString(toCurrency),
         price: remoteModel.price,
         time: DateTime.parse(remoteModel.timeExchange),
       );

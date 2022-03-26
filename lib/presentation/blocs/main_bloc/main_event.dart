@@ -18,8 +18,8 @@ class ActualDataRequestEvent extends MainEvent {
     required this.toCurrency,
   });
 
-  final FromCurrencyEnum fromCurrency;
-  final ToCurrencyEnum toCurrency;
+  final String fromCurrency;
+  final String toCurrency;
 
   @override
   List<Object?> get props => [fromCurrency, toCurrency];

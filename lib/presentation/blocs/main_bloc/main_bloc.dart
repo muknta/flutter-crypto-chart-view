@@ -50,12 +50,16 @@ class MainBloc with BlocStreamMixin {
           ),
         );
       } else if (event is ActualDataRequestEvent) {
-        await SetSocketRequest(remoteRepository: _remoteRepository).execute(
-          params: RequestWebSocketEntity(
-            fromCurrency: event.fromCurrency,
-            toCurrency: event.toCurrency,
-          ),
-        );
+        final FromCurrencyEnum? fromCurrency = getFromCurrencyEnumFromString(event.fromCurrency);
+        final ToCurrencyEnum? toCurrency = getToCurrencyEnumFromString(event.toCurrency);
+        if (fromCurrency != null && toCurrency != null) {
+          await SetSocketRequest(remoteRepository: _remoteRepository).execute(
+            params: RequestWebSocketEntity(
+              fromCurrency: fromCurrency,
+              toCurrency: toCurrency,
+            ),
+          );
+        }
       } else if (event is HistoricalDataRequestEvent) {}
     }
   }
