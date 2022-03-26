@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 mixin BlocStreamMixin<T> {
   Function(T) sinkAdd(StreamController<T>? streamController) => streamController?.isClosed ?? true

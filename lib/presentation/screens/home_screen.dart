@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:crypto_chart_view/presentation/widgets/actual_data_widget.dart';
+import 'package:crypto_chart_view/presentation/widgets/currency_form.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,11 +14,12 @@ class HomeScreen extends StatefulWidget {
   final String _title;
 
   @override
-  HomeScreenState createState() => HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   late MainBloc _mainBloc;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -35,11 +40,11 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
-          child: StreamBuilder(
-            stream: _mainBloc.webSocketChannel.stream,
-            builder: (context, snapshot) {
-              return Text(snapshot.hasData ? '${snapshot.data}' : '');
-            },
+          child: Column(
+            children: const [
+              CurrencyForm(),
+              ActualDataWidget(),
+            ],
           ),
         ),
       );
