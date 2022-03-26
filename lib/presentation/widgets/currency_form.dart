@@ -29,11 +29,14 @@ class _CurrencyFormState extends State<CurrencyForm> {
               child: _DropdownListWidget(
                 title: 'From:',
                 values: fromCurrencyUppercasedNames,
-                onChoose: (String value) {print('aaaa2223a'); _bloc.addEvent(SetFromCurrencyEvent(value: value));},
+                onChoose: (String value) {
+                  print('aaaa2223a');
+                  _bloc.addEvent(SetFromCurrencyEvent(value: value));
+                },
                 stream: _bloc.fromCurrencySwitcherStream,
               ),
             ),
-            const Spacer(),
+            Spacer(),
             Expanded(
               child: _DropdownListWidget(
                 title: 'To:',
@@ -42,14 +45,14 @@ class _CurrencyFormState extends State<CurrencyForm> {
                 stream: _bloc.toCurrencySwitcherStream,
               ),
             ),
-            const Spacer(),
+            Spacer(),
             Expanded(
               flex: 2,
               child: ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Processing data')),
-                    );
+                    const SnackBar(content: Text('Processing data')),
+                  );
                   _bloc.addEvent(const ActualDataRequestEvent());
                 },
                 child: const Text('Subscribe'),
@@ -87,9 +90,24 @@ class _DropdownListWidget extends StatelessWidget {
           dropdownValue = (snapshot.data as ToCurrencySwitcherState).value.toUpperCase();
         }
         return Column(
-          textDirection: TextDirection.ltr,
           children: [
-            Text(_title),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                _title,
+                textAlign: TextAlign.left,
+              ),
+            ),
+            // InputDecorator(
+            //   decoration: InputDecoration(
+            //     labelStyle: TextStyle(color: Colors.black),
+            //     errorStyle: TextStyle(color: Colors.redAccent),
+            //     hintText: 'Please, select currency',
+            //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+            //   ),
+            //   child:
+            // DropdownButtonHideUnderline(
+            //   child:
             DropdownButton<String>(
               value: dropdownValue,
               items: _values.map((String value) {
@@ -104,6 +122,8 @@ class _DropdownListWidget extends StatelessWidget {
                 }
               },
             ),
+            // ),
+            // ),
           ],
         );
       });

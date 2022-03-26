@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:charts_flutter/flutter.dart';
 import 'package:crypto_chart_view/presentation/widgets/actual_data_widget.dart';
 import 'package:crypto_chart_view/presentation/widgets/currency_form.dart';
+import 'package:crypto_chart_view/presentation/widgets/historical_data_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,12 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
-              children: const [
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20.0),
-                  child: CurrencyForm(),
+              children: [
+                const CurrencyForm(),
+                const SizedBox(height: 20.0),
+                const ActualDataWidget(),
+                const SizedBox(height: 30.0),
+                Expanded(
+                  child: HistoricalDataChart.withSampleData(),
                 ),
-                ActualDataWidget(),
               ],
             ),
           ),

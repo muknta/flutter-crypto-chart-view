@@ -57,11 +57,9 @@ class MainBloc with BlocStreamMixin {
   Future<void> _handleEvent(dynamic event) async {
     if (event is MainEvent) {
       if (event is InitialEvent) {
-        await SetSocketRequest(remoteRepository: _remoteRepository).execute(
-          params: const RequestWebSocketEntity(
-            fromCurrency: FromCurrencyEnum.btc,
-            toCurrency: ToCurrencyEnum.usd,
-          ),
+        _setSocketRequest(
+          fromCurrency: _defaultFromCurrencyStringValue.fromCurrencyEnumValue,
+          toCurrency: _defaultToCurrencyStringValue.toCurrencyEnumValue,
         );
       } else if (event is ActualDataEvent) {
         if (event is ActualDataRequestEvent) {
@@ -70,14 +68,7 @@ class MainBloc with BlocStreamMixin {
             final FromCurrencyEnum? fromCurrency =
                 _fromCurrencySwitcherStateController.value.value.fromCurrencyEnumValue;
             final ToCurrencyEnum? toCurrency = _toCurrencySwitcherStateController.value.value.toCurrencyEnumValue;
-            if (fromCurrency != null && toCurrency != null) {
-              await SetSocketRequest(remoteRepository: _remoteRepository).execute(
-                params: RequestWebSocketEntity(
-                  fromCurrency: fromCurrency,
-                  toCurrency: toCurrency,
-                ),
-              );
-            }
+            _setSocketRequest(fromCurrency: fromCurrency, toCurrency: toCurrency);
           }
         } else if (event is SetFromCurrencyEvent) {
           _setFromCurrencySwitcherState(FromCurrencySwitcherState(value: event.value));
@@ -85,6 +76,20 @@ class MainBloc with BlocStreamMixin {
           _setToCurrencySwitcherState(ToCurrencySwitcherState(value: event.value));
         }
       } else if (event is HistoricalDataRequestEvent) {}
+    }
+  }
+
+  Future<void> _setSocketRequest({
+    required FromCurrencyEnum? fromCurrency,
+    required ToCurrencyEnum? toCurrency,
+  }) async {
+    if (fromCurrency != null && toCurrency != null) {
+      await SetSocketRequest(remoteRepository: _remoteRepository).execute(
+        params: RequestWebSocketEntity(
+          fromCurrency: fromCurrency,
+          toCurrency: toCurrency,
+        ),
+      );
     }
   }
 
