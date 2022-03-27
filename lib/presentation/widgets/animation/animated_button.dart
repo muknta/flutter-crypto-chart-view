@@ -92,7 +92,7 @@ class _AnimatedButtonState extends State<AnimatedButton> {
               widget._title,
               minFontSize: 15.0,
               maxFontSize: 20.0,
-              style: TextStyle(letterSpacing: 1.0, fontWeight: FontWeight.w500),
+              style: const TextStyle(letterSpacing: 1.0, fontWeight: FontWeight.w500),
             ),
           ),
         ),
