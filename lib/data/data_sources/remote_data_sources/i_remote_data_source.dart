@@ -10,7 +10,7 @@ abstract class IRemoteDataSource {
 
   Future<void> setSocketRequest({required RequestWebSocketRemoteModel requestModel});
 
-  Future<List<ExchangeRateTimeSeriesRemoteModel>> getExchangeRatesTimeSeries({
+  Future<List<ExchangeRateTimeSeriesRemoteModel>> fetchExchangeRatesTimeSeries({
     required ExchangeRateModel exchangeRate,
   });
 }

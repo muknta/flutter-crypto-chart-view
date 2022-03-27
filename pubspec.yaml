@@ -17,7 +17,7 @@ dependencies:
   injectable: ^1.5.3
   provider: ^6.0.2
   # DB
-  sqflite: ^2.0.2
+  sembast: ^3.2.0
   # Web API
   dio: ^4.0.4
   retrofit: ^3.0.1+1

@@ -3,8 +3,8 @@ import 'package:crypto_chart_view/domain/repositories/remote_repositories/i_remo
 import 'package:crypto_chart_view/domain/use_cases/i_use_case.dart';
 import 'package:crypto_chart_view/presentation/models/exchange_rate_model.dart';
 
-class GetExchangeRatesTimeSeries with IUseCase<Future<List<ExchangeRateTimeSeriesEntity>>, ExchangeRateModel> {
-  const GetExchangeRatesTimeSeries({
+class FetchExchangeRatesTimeSeries with IUseCase<Future<List<ExchangeRateTimeSeriesEntity>>, ExchangeRateModel> {
+  const FetchExchangeRatesTimeSeries({
     required IRemoteRepository remoteRepository,
   }) : _remoteRepository = remoteRepository;
 
@@ -12,5 +12,5 @@ class GetExchangeRatesTimeSeries with IUseCase<Future<List<ExchangeRateTimeSerie
 
   @override
   Future<List<ExchangeRateTimeSeriesEntity>> execute({required ExchangeRateModel params}) async =>
-      _remoteRepository.getExchangeRatesTimeSeries(exchangeRate: params);
+      _remoteRepository.fetchExchangeRatesTimeSeries(exchangeRate: params);
 }

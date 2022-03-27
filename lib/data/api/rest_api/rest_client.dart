@@ -10,7 +10,7 @@ abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
   @GET('/v1/exchangerate/{asset_id_base}/{asset_id_quote}/history')
-  Future<List<ExchangeRateTimeSeriesRemoteModel>> getExchangeRatesTimeSeries({
+  Future<List<ExchangeRateTimeSeriesRemoteModel>> fetchExchangeRatesTimeSeries({
     @Path('asset_id_base') required String fromCurrency,
     @Path('asset_id_quote') required String toCurrency,
     @Query('period_id') required String periodId,

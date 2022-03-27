@@ -30,11 +30,11 @@ class RemoteRepository implements IRemoteRepository {
       _remoteDataSource.setSocketRequest(requestModel: requestEntity.toRemoteModel());
 
   @override
-  Future<List<ExchangeRateTimeSeriesEntity>> getExchangeRatesTimeSeries({
+  Future<List<ExchangeRateTimeSeriesEntity>> fetchExchangeRatesTimeSeries({
     required ExchangeRateModel exchangeRate,
   }) async {
     final List<ExchangeRateTimeSeriesRemoteModel> remoteModelList =
-        await _remoteDataSource.getExchangeRatesTimeSeries(exchangeRate: exchangeRate);
+        await _remoteDataSource.fetchExchangeRatesTimeSeries(exchangeRate: exchangeRate);
     return remoteModelList
         .map(
           (remoteModel) => ExchangeRateTimeSeriesEntity.fromRemoteModel(remoteModel: remoteModel),

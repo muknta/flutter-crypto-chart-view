@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:crypto_chart_view/domain/entities/time_series/exchange_rate_time_series_entity.dart';
 import 'package:crypto_chart_view/domain/entities/web_socket/request_web_socket_entity.dart';
 import 'package:crypto_chart_view/domain/entities/web_socket/response_web_socket_entity.dart';
-import 'package:crypto_chart_view/domain/use_cases/remote_use_cases/time_series/get_exchange_rates_time_series.dart';
+import 'package:crypto_chart_view/domain/use_cases/local_use_cases/get_exchange_rate_model.dart';
+import 'package:crypto_chart_view/domain/use_cases/local_use_cases/set_exchange_rate_model.dart';
+import 'package:crypto_chart_view/domain/use_cases/remote_use_cases/time_series/fetch_exchange_rates_time_series.dart';
 import 'package:crypto_chart_view/domain/use_cases/remote_use_cases/web_socket/get_socket_response_stream.dart';
 import 'package:crypto_chart_view/domain/use_cases/remote_use_cases/web_socket/set_socket_request.dart';
 import 'package:crypto_chart_view/presentation/models/exchange_rate_chart_view_model.dart';
@@ -30,20 +32,15 @@ class MainBloc with BlocStreamMixin {
   final IRemoteRepository _remoteRepository;
   final ILocalRepository _localRepository;
 
-  static const String _defaultFromCurrencyStringValue = 'BTC';
-  static const String _defaultToCurrencyStringValue = 'USD';
-
   final _eventController = BehaviorSubject<MainEvent>();
   Function(MainEvent) get addEvent => sinkAdd(_eventController);
 
-  final _fromCurrencySwitcherStateController = BehaviorSubject<FromCurrencySwitcherState>.seeded(
-      const FromCurrencySwitcherState(value: _defaultFromCurrencyStringValue));
+  final _fromCurrencySwitcherStateController = BehaviorSubject<FromCurrencySwitcherState>();
   Stream<FromCurrencySwitcherState> get fromCurrencySwitcherStream => _fromCurrencySwitcherStateController.stream;
   Function(FromCurrencySwitcherState) get _setFromCurrencySwitcherState =>
       sinkAdd(_fromCurrencySwitcherStateController);
 
-  final _toCurrencySwitcherStateController = BehaviorSubject<ToCurrencySwitcherState>.seeded(
-      const ToCurrencySwitcherState(value: _defaultToCurrencyStringValue));
+  final _toCurrencySwitcherStateController = BehaviorSubject<ToCurrencySwitcherState>();
   Stream<ToCurrencySwitcherState> get toCurrencySwitcherStream => _toCurrencySwitcherStateController.stream;
   Function(ToCurrencySwitcherState) get _setToCurrencySwitcherState => sinkAdd(_toCurrencySwitcherStateController);
 
@@ -67,16 +64,9 @@ class MainBloc with BlocStreamMixin {
   Future<void> _handleEvent(dynamic event) async {
     if (event is MainEvent) {
       if (event is InitialEvent) {
-        final FromCurrencyEnum? fromCurrency = _defaultFromCurrencyStringValue.fromCurrencyEnumValue;
-        final ToCurrencyEnum? toCurrency = _defaultToCurrencyStringValue.toCurrencyEnumValue;
-        if (fromCurrency != null && toCurrency != null) {
-          await _loadNewData(
-            exchangeRate: ExchangeRateModel(
-              fromCurrency: fromCurrency,
-              toCurrency: toCurrency,
-            ),
-          );
-        }
+        final ExchangeRateModel? exchangeRateModel =
+            await GetExchangeRateModel(localRepository: _localRepository).execute();
+        await _checkCurrentData(exchangeRateModel: exchangeRateModel);
       } else if (event is ActualDataEvent) {
         if (event is SetFromCurrencyEvent) {
           _setFromCurrencySwitcherState(FromCurrencySwitcherState(value: event.value));
@@ -84,12 +74,33 @@ class MainBloc with BlocStreamMixin {
           _setToCurrencySwitcherState(ToCurrencySwitcherState(value: event.value));
         }
       } else if (event is DataRequestEvent) {
-        final ExchangeRateModel? exchangeRate = _getExchangeRateModel();
-        if (exchangeRate != null) {
-          await _loadNewData(exchangeRate: exchangeRate);
+        final ExchangeRateModel? exchangeRateModel = _getExchangeRateModel();
+        if (exchangeRateModel != null) {
+          if (exchangeRateModel != await GetExchangeRateModel(localRepository: _localRepository).execute()) {
+            await SetExchangeRateModel(localRepository: _localRepository).execute(params: exchangeRateModel);
+          }
+          await _loadNewData(exchangeRate: exchangeRateModel);
         }
       }
     }
+  }
+
+  Future<void> _checkCurrentData({required ExchangeRateModel? exchangeRateModel}) async {
+    ExchangeRateModel? exchangeModelCopy = exchangeRateModel;
+    if (exchangeModelCopy == null) {
+      exchangeModelCopy = const ExchangeRateModel(
+        fromCurrency: defaultFromCurrency,
+        toCurrency: defaultToCurrency,
+      );
+      await SetExchangeRateModel(localRepository: _localRepository).execute(params: exchangeModelCopy);
+    }
+    _setFromCurrencySwitcherState(
+      FromCurrencySwitcherState(value: exchangeModelCopy.fromCurrency.uppercasedName),
+    );
+    _setToCurrencySwitcherState(
+      ToCurrencySwitcherState(value: exchangeModelCopy.toCurrency.uppercasedName),
+    );
+    await _loadNewData(exchangeRate: exchangeModelCopy);
   }
 
   Future<void> _loadNewData({required ExchangeRateModel exchangeRate}) async {
@@ -109,7 +120,7 @@ class MainBloc with BlocStreamMixin {
 
   Future<void> _setExchangeRatesChartView({required ExchangeRateModel exchangeRate}) async {
     final List<ExchangeRateTimeSeriesEntity> exchangeRateEntities =
-        await GetExchangeRatesTimeSeries(remoteRepository: _remoteRepository).execute(params: exchangeRate);
+        await FetchExchangeRatesTimeSeries(remoteRepository: _remoteRepository).execute(params: exchangeRate);
     final chartViewModels = <ExchangeRateChartViewModel>[];
     exchangeRateEntities.map((entity) {
       chartViewModels.add(ExchangeRateChartViewModel(

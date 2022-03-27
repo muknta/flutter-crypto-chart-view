@@ -10,7 +10,7 @@ abstract class IRemoteRepository {
 
   Future<void> setSocketRequest({required RequestWebSocketEntity requestEntity});
 
-  Future<List<ExchangeRateTimeSeriesEntity>> getExchangeRatesTimeSeries({
+  Future<List<ExchangeRateTimeSeriesEntity>> fetchExchangeRatesTimeSeries({
     required ExchangeRateModel exchangeRate,
   });
 }

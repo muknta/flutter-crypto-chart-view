@@ -9,6 +9,9 @@ enum ToCurrencyEnum {
   usd,
 }
 
+const FromCurrencyEnum defaultFromCurrency = FromCurrencyEnum.btc;
+const ToCurrencyEnum defaultToCurrency = ToCurrencyEnum.usd;
+
 extension FromCurrencyEnumExtension on FromCurrencyEnum {
   String get uppercasedName => name.toUpperCase();
 }

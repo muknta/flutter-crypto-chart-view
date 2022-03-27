@@ -44,13 +44,13 @@ class RemoteDataSource implements IRemoteDataSource {
       _socketClient.setSocketRequest(parameters: requestModel.toJson());
 
   @override
-  Future<List<ExchangeRateTimeSeriesRemoteModel>> getExchangeRatesTimeSeries({
+  Future<List<ExchangeRateTimeSeriesRemoteModel>> fetchExchangeRatesTimeSeries({
     required ExchangeRateModel exchangeRate,
   }) async {
     final currentDateTime = DateTime.now();
     final DateTime startDateTime = currentDateTime.subtract(const Duration(days: numberOfObservableDays));
 
-    return _restClient.getExchangeRatesTimeSeries(
+    return _restClient.fetchExchangeRatesTimeSeries(
       fromCurrency: exchangeRate.fromCurrency.uppercasedName,
       toCurrency: exchangeRate.toCurrency.uppercasedName,
       periodId: defaultPeriodId.apiName,
