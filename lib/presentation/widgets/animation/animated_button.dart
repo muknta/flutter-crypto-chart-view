@@ -59,6 +59,8 @@ class _AnimatedButtonState extends State<AnimatedButton> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     Future.delayed(const Duration(milliseconds: 10), () {
+      /// I know,
+      /// I should do this in AnimationBloc :)
       setState(() {
         _bottomColor = _colorList[_index + 1];
       });
