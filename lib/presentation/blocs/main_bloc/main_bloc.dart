@@ -112,11 +112,12 @@ class MainBloc with BlocStreamMixin {
         await GetExchangeRatesTimeSeries(remoteRepository: _remoteRepository).execute(params: exchangeRate);
     final chartViewModels = <ExchangeRateChartViewModel>[];
     exchangeRateEntities.map((entity) {
+      print('time ${entity.lastTradeTime} === rate ${entity.lastTradeRate.toDouble()}');
       chartViewModels.add(ExchangeRateChartViewModel(
         dateTime: entity.lastTradeTime,
         rate: entity.lastTradeRate.toDouble(),
       ));
-    });
+    }).toList();
     _setExchangeRatesTimeSeriesState(ExchangeRateChartViewState(
       chartViewModels: chartViewModels,
     ));

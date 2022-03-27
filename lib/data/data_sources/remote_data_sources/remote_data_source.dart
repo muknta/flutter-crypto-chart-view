@@ -46,7 +46,7 @@ class RemoteDataSource implements IRemoteDataSource {
   @override
   Future<List<ExchangeRateTimeSeriesRemoteModel>> getExchangeRatesTimeSeries({
     required ExchangeRateModel exchangeRate,
-  }) {
+  }) async {
     final currentDateTime = DateTime.now();
     final DateTime startDateTime = currentDateTime.subtract(const Duration(days: 15));
 
