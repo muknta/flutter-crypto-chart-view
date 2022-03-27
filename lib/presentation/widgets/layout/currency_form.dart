@@ -60,7 +60,7 @@ class _CurrencyFormState extends State<CurrencyForm> {
                   title: 'Subscribe',
                   onTap: () {
                     showSnackBar(context, title: 'Processing actual data');
-                    _bloc.addEvent(const ActualDataRequestEvent());
+                    _bloc.addEvent(const DataRequestEvent());
                   },
                 ),
               ),

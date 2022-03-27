@@ -1,4 +1,5 @@
-import 'package:crypto_chart_view/domain/entities/response_web_socket_entity.dart';
+import 'package:crypto_chart_view/domain/entities/web_socket/response_web_socket_entity.dart';
+import 'package:crypto_chart_view/presentation/models/exchange_rate_chart_view_model.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class MainState extends Equatable {
@@ -45,9 +46,11 @@ class ToCurrencySwitcherState extends ActualDataState {
   List<Object?> get props => [value];
 }
 
-class LoadedHistoricalDataState extends MainState {
-  const LoadedHistoricalDataState();
+class ExchangeRateChartViewState extends MainState {
+  const ExchangeRateChartViewState({required this.chartViewModels});
+
+  final List<ExchangeRateChartViewModel> chartViewModels;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [chartViewModels];
 }

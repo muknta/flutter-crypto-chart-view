@@ -15,10 +15,6 @@ abstract class ActualDataEvent extends MainEvent {
   const ActualDataEvent();
 }
 
-class ActualDataRequestEvent extends ActualDataEvent {
-  const ActualDataRequestEvent();
-}
-
 class SetFromCurrencyEvent extends ActualDataEvent {
   const SetFromCurrencyEvent({
     required this.value,
@@ -41,9 +37,6 @@ class SetToCurrencyEvent extends ActualDataEvent {
   List<Object?> get props => [value];
 }
 
-class HistoricalDataRequestEvent extends MainEvent {
-  const HistoricalDataRequestEvent();
-
-  @override
-  List<Object?> get props => [];
+class DataRequestEvent extends MainEvent {
+  const DataRequestEvent();
 }

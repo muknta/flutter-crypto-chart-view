@@ -1,4 +1,4 @@
-import 'package:crypto_chart_view/data/api/models/remote_models/response_web_socket_remote_model.dart';
+import 'package:crypto_chart_view/data/api/models/remote_models/web_socket/response_web_socket_remote_model.dart';
 import 'package:crypto_chart_view/presentation/utils/enums/currency_enum.dart';
 
 class ResponseWebSocketEntity {

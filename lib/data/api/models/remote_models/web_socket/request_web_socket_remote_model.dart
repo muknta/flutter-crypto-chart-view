@@ -1,5 +1,4 @@
-import 'package:crypto_chart_view/data/api/settings/api_config.dart';
-import 'package:crypto_chart_view/presentation/utils/enums/currency_enum.dart';
+import 'package:crypto_chart_view/data/api/utils/settings/api_config.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'request_web_socket_remote_model.g.dart';
@@ -14,10 +13,7 @@ class RequestWebSocketRemoteModel {
     this.apiKey = serviceApiKey,
   });
 
-  factory RequestWebSocketRemoteModel.fromJson(Map<String, dynamic> json) =>
-      _$RequestWebSocketRemoteModelFromJson(json);
-
-  Map<String, dynamic> toJson() =>_$RequestWebSocketRemoteModelToJson(this);
+  Map<String, dynamic> toJson() => _$RequestWebSocketRemoteModelToJson(this);
 
   @JsonKey(name: 'type')
   final String type;
