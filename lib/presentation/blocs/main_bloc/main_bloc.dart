@@ -114,7 +114,9 @@ class MainBloc with BlocStreamMixin {
     exchangeRateEntities.map((entity) {
       chartViewModels.add(ExchangeRateChartViewModel(
         dateTime: entity.lastTradeTime,
-        rate: entity.lastTradeRate.toDouble(),
+        lowestRate: entity.lastTradeRate.toDouble(),
+        highestRate: entity.lastTradeRate.toDouble(),
+        lastRate: entity.lastTradeRate.toDouble(),
       ));
     }).toList();
     _setExchangeRatesTimeSeriesState(ExchangeRateChartViewState(
