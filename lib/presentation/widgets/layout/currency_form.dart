@@ -28,7 +28,7 @@ class _CurrencyFormState extends State<CurrencyForm> {
         child: Row(
           children: [
             Expanded(
-              flex: 5,
+              flex: 6,
               child: _FormItemColumn(
                 title: 'From:',
                 child: _DropdownListWidget(
@@ -40,7 +40,7 @@ class _CurrencyFormState extends State<CurrencyForm> {
             ),
             const Spacer(),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: _FormItemColumn(
                 title: 'To:',
                 child: _DropdownListWidget(
@@ -52,7 +52,7 @@ class _CurrencyFormState extends State<CurrencyForm> {
             ),
             const Spacer(),
             Expanded(
-              flex: 10,
+              flex: 8,
               child: _FormItemColumn(
                 /// Add empty string for general Form Row crossAxisAlignment
                 title: '',

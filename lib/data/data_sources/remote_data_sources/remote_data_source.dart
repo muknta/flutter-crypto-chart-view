@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:crypto_chart_view/data/api/rest_api/interceptors/dio_error_interceptor.dart';
 import 'package:crypto_chart_view/data/api/utils/enums/period_id_request_time_series_enum.dart';
 import 'package:crypto_chart_view/data/api/models/remote_models/time_series/exchange_rate_time_series_remote_model.dart';
 import 'package:crypto_chart_view/data/api/models/remote_models/web_socket/request_web_socket_remote_model.dart';
@@ -21,9 +22,11 @@ class RemoteDataSource implements IRemoteDataSource {
     _socketClient = WebSocketBlocClient(
       socketController: WebSocketChannel.connect(Uri.parse(webSocketSandboxBaseUrl)),
     );
-    _restClient = RestClient(Dio(BaseOptions(
+    final dio = Dio(BaseOptions(
       headers: {"X-CoinAPI-Key": serviceApiKey},
-    )));
+    ));
+    dio.interceptors.add(DioErrorInterceptor());
+    _restClient = RestClient(dio);
   }
 
   late final WebSocketBlocClient _socketClient;

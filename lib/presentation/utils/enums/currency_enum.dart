@@ -1,11 +1,17 @@
 import 'package:collection/collection.dart';
 
 enum FromCurrencyEnum {
+  bnt,
   btc,
+  eos,
   eth,
+  ltc,
+  usdt,
 }
 
 enum ToCurrencyEnum {
+  eur,
+  gbp,
   usd,
 }
 
@@ -21,6 +27,10 @@ extension ToCurrencyEnumExtension on ToCurrencyEnum {
 
   String get symbol {
     switch (this) {
+      case ToCurrencyEnum.eur:
+        return '€';
+      case ToCurrencyEnum.gbp:
+        return '£';
       case ToCurrencyEnum.usd:
         return '\$';
     }
