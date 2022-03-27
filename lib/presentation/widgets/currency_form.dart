@@ -24,20 +24,20 @@ class _CurrencyFormState extends State<CurrencyForm> {
   Widget build(BuildContext context) => Form(
         key: _formKey,
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Expanded(
+              flex: 5,
               child: _DropdownListWidget(
                 title: 'From:',
                 values: fromCurrencyUppercasedNames,
-                onChoose: (String value) {
-                  print('aaaa2223a');
-                  _bloc.addEvent(SetFromCurrencyEvent(value: value));
-                },
+                onChoose: (String value) => _bloc.addEvent(SetFromCurrencyEvent(value: value)),
                 stream: _bloc.fromCurrencySwitcherStream,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Expanded(
+              flex: 5,
               child: _DropdownListWidget(
                 title: 'To:',
                 values: toCurrencyUppercasedNames,
@@ -45,10 +45,11 @@ class _CurrencyFormState extends State<CurrencyForm> {
                 stream: _bloc.toCurrencySwitcherStream,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Expanded(
-              flex: 2,
+              flex: 10,
               child: ElevatedButton(
+                style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.black54)),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Processing data')),
@@ -98,32 +99,33 @@ class _DropdownListWidget extends StatelessWidget {
                 textAlign: TextAlign.left,
               ),
             ),
-            // InputDecorator(
-            //   decoration: InputDecoration(
-            //     labelStyle: TextStyle(color: Colors.black),
-            //     errorStyle: TextStyle(color: Colors.redAccent),
-            //     hintText: 'Please, select currency',
-            //     border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-            //   ),
-            //   child:
-            // DropdownButtonHideUnderline(
-            //   child:
-            DropdownButton<String>(
-              value: dropdownValue,
-              items: _values.map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value.toUpperCase(),
-                  child: Text(value.toUpperCase()),
-                );
-              }).toList(),
-              onChanged: (String? value) {
-                if (value != null) {
-                  _onChoose(value.toUpperCase());
-                }
-              },
+            InputDecorator(
+              decoration: InputDecoration(
+                labelStyle: const TextStyle(color: Colors.black),
+                errorStyle: const TextStyle(color: Colors.redAccent),
+                hintText: 'Please, select currency',
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 10.0),
+              ),
+              child: DropdownButtonHideUnderline(
+                // TODO: DropdownButtonFormField
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  items: _values.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value.toUpperCase(),
+                      child: Text(value.toUpperCase()),
+                    );
+                  }).toList(),
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      _onChoose(value.toUpperCase());
+                    }
+                  },
+                ),
+              ),
             ),
-            // ),
-            // ),
           ],
         );
       });
