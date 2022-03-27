@@ -1,4 +1,4 @@
-# Weather Getter
+# Exchange rates of Crypto Currencies
 This app fetches a cryptocurrency exchange rates API from [CoinAPI](https://docs.coinapi.io) using WebSocket API for real-time data and REST API for historical chart data.
 
 Main features:
