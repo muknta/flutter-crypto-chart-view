@@ -34,8 +34,6 @@ enum PeriodIdRequestTimeSeriesEnum {
   day10,
 }
 
-PeriodIdRequestTimeSeriesEnum get defaultPeriodId => PeriodIdRequestTimeSeriesEnum.day10;
-
 extension PeriodIdRequestTimeSeriesStringExtension on PeriodIdRequestTimeSeriesEnum {
   String get apiName => '${name.substring(3)}${name.substring(0, 3).toUpperCase()}';
 }

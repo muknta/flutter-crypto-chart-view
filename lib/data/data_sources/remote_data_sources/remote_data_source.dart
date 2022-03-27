@@ -48,7 +48,7 @@ class RemoteDataSource implements IRemoteDataSource {
     required ExchangeRateModel exchangeRate,
   }) async {
     final currentDateTime = DateTime.now();
-    final DateTime startDateTime = currentDateTime.subtract(const Duration(days: 15));
+    final DateTime startDateTime = currentDateTime.subtract(const Duration(days: numberOfObservableDays));
 
     return _restClient.getExchangeRatesTimeSeries(
       fromCurrency: exchangeRate.fromCurrency.uppercasedName,
