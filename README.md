@@ -16,9 +16,9 @@ Project divided by four structure levels (data, domain (business-logic), interna
 $ git clone https://github.com/heknt/flutter-crypto-chart-view.git
 $ cd flutter-crypto-chart-view
 ```
-Set your own [CoinAPI appKey](https://docs.coinapi.io/) in project [service config](https://github.com/heknt/flutter-crypto-chart-view/blob/master/lib/data/api/utils/services/settings/config.dart)
+1. Set your own [CoinAPI apiKey](https://docs.coinapi.io/) in project [service config](https://github.com/heknt/flutter-crypto-chart-view/blob/main/lib/data/api/utils/settings/api_config.dart#L4)
 
-Connect your phone to computer and enable USB debugging. Next:
+2. Connect your phone to computer and enable USB debugging. Next:
 ```bash
 flutter-crypto-chart-view$ flutter doctor
 flutter-crypto-chart-view$ flutter pub get
