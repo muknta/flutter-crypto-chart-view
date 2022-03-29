@@ -78,8 +78,8 @@ class MainBloc with BlocStreamMixin {
         if (exchangeRateModel != null) {
           if (exchangeRateModel != await GetExchangeRateModel(localRepository: _localRepository).execute()) {
             await SetExchangeRateModel(localRepository: _localRepository).execute(params: exchangeRateModel);
+            await _loadNewData(exchangeRate: exchangeRateModel);
           }
-          await _loadNewData(exchangeRate: exchangeRateModel);
         }
       }
     }
