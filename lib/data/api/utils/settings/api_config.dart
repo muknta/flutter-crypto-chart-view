@@ -5,10 +5,10 @@ import 'package:crypto_chart_view/data/api/utils/enums/period_id_request_time_se
 const String serviceApiKey = "";
 
 // REST API
-const String restApiProductionBaseUrl = 'https://rest-sandbox.coinapi.io';
+const String restApiProductionBaseUrl = 'https://rest.coinapi.io';
 const String restApiSandboxBaseUrl = 'https://rest-sandbox.coinapi.io';
 
-const PeriodIdRequestTimeSeriesEnum defaultPeriodId = PeriodIdRequestTimeSeriesEnum.day2;
+const defaultPeriodId = PeriodIdRequestTimeSeriesEnum.day2;
 const int numberOfObservableDays = 60;
 
 // WebSocket API
