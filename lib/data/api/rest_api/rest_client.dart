@@ -5,7 +5,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
 
-@RestApi(baseUrl: restApiSandboxBaseUrl)
+@RestApi(baseUrl: restApiProductionBaseUrl)
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
@@ -16,6 +16,5 @@ abstract class RestClient {
     @Query('period_id') required String periodId,
     @Query('time_start') required String timeStart,
     @Query('time_end') required String timeEnd,
-    @Query('limit') int? limit,
   });
 }
